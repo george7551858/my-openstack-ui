@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>openstackUI</title>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+  </head>
+  <body>
+    <!--[if lt IE 10]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="container">
+      <div class="header">
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">OpenStack UI</a>
+          </div>
+          <form class="navbar-form navbar-right" role="get token">
+            <div class="form-group">
+              <input type="text" class="form-control" id="tenantName" placeholder="Tenant Name">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" id="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" id="password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-success" id="get_token">
+              Get Token!
+              <span class="glyphicon glyphicon-lock"></span>
+            </button>
+          </form>
+        </nav>
+      </div>
+      <div class="row">
+        <form id="custom_request" class="form clearfix" action="#">
+          <div class="col-xs-12">
+            <div class="input-group">
+              <input type="text" id="resource_url" class="form-control" placeholder="Resource URL" aria-label="Resource URL">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-primary" id="custom_request_get">Get</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#get">Get</a></li>
+                  <li><a href="#post">Post</a></li>
+                  <li><a href="#put">Put</a></li>
+                  <li><a href="#delete">Delete</a></li>
+                </ul>
+              </div><!-- /btn-group -->
+            </div><!-- /input-group -->
+          </div><!-- /.col-sm-6 -->
+          <div class="col-sm-6">
+            <textarea id="request_content" class="form-control" rows="3">{}</textarea>
+          </div>
+        </form>
+      </div>
+      <hr>
+      <div class="row">
+        <div id="component" class="btn-group col-sm-12" data-toggle="buttons">
+          <label class="btn btn-default active">
+            <input type="radio" name="api" id="nova" autocomplete="off" >Computer
+          </label>
+          <label class="btn btn-default">
+            <input type="radio" name="api" id="neutron" autocomplete="off"> Networking
+          </label>
+          <label class="btn btn-default">
+            <input type="radio" name="api" id="keystone" autocomplete="off"> Identity
+          </label>
+          <label class="btn btn-default">
+            <input type="radio" name="api" id="heat" autocomplete="off"> Orchestration
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="nova resource btn-group" data-component="nova">
+            <button type="button" class="btn btn-default">Resource</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#servers">Server</a></li>
+              <li><a href="#limits">Limit</a></li>
+              <li><a href="#extensions">Extension</a></li>
+              <li><a href="#flavors">Flavor</a></li>
+              <li><a href="#images">Image</a></li>
+            </ul>
+          </div><!-- /btn-group -->
+          <button id="add_server" type="button" class="nova resource btn btn-default">New Server</button>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <table id="list_ret" class="table table-hover table-condensed"></table>
+      </div>
+      <div class="row">
+        <pre id="json_ret"></pre>
+      </div>
+
+      <div class="footer">
+        <p>♥ from the Yeoman team</p>
+      </div>
+    </div>
+
+
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+</body>
+</html>
