@@ -52,7 +52,7 @@
             <div class="input-group">
               <input type="text" id="resource_url" class="form-control" placeholder="Resource URL" aria-label="Resource URL">
               <div class="input-group-btn">
-                <button type="button" class="btn btn-primary" id="custom_request_get">Get</button>
+                <button type="button" class="btn btn-primary">Get</button>
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                   <span class="caret"></span>
                   <span class="sr-only">Toggle Dropdown</span>
@@ -115,6 +115,32 @@
               <li><a href="#networks">Network</a></li>
               <li><a href="#subnets">Subnet</a></li>
               <li><a href="#ports">Port</a></li>
+            </ul>
+          </div><!-- /btn-group -->
+          <div class="keystone resource btn-group" data-component="keystone">
+            <button type="button" class="btn btn-default">Keystone Resource</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#tokens">Token</a></li>
+              <li><a href="#tenants">Tenant</a></li>
+              <li><a href="#extensions">Extension</a></li>
+            </ul>
+          </div><!-- /btn-group -->
+          <div class="heat resource btn-group" data-component="heat">
+            <button type="button" class="btn btn-default">Heat Resource</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#stacks">Stack</a></li>
+              <li><a href="#software_configs">Software Config</a></li>
+              <li><a href="#software_deployments">Software Deployment</a></li>
+              <li><a href="#services">Service</a></li>
+              <li><a href="#build_info">Build Info</a></li>
             </ul>
           </div><!-- /btn-group -->
         </div>

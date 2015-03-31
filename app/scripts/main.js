@@ -6,7 +6,7 @@ var services_mapping = {
   nova: ':8774/v2/',
   neutron: ':9696/v2.0/',
   keystone: ':5000/v2.0/',
-  heat: ':8004/'
+  heat: ':8004/v1/'
 };
 
 function get_token() {
@@ -51,7 +51,7 @@ function gen_REST_url (component, resource, item_id) {
   var tenant_id = Cookies.get("tenant");
   var res = openstack_url;
   res+= services_mapping[component];
-  if(component == "nova" && resource !== undefined ) {res+= tenant_id;}
+  if(component == "nova" || component == "heat" && resource !== undefined ) {res+= tenant_id;}
   if(resource) {res+= '/'+resource;}
   if(resource && item_id) {res+= '/'+item_id;}
 
@@ -142,6 +142,11 @@ $('.resource').on('click', 'a', function(event) {
   });
 });
 
+$('.btn-group').on('click', 'button:first-child', function(event) {
+  event.preventDefault();
+  $(this).nextAll('ul').find('a').eq(0).trigger('click');
+});
+
 // $('#list_ret').on('click', 'button', function(event) {
 //   event.preventDefault();
 //   function pop(obj) {
@@ -165,7 +170,3 @@ $('#custom_request').on('click', 'a', function(event) {
 
   openstack_api(resource_url,method,content);
 });
-
-function custom_request_get () {
-  $('#custom_request a').eq(0).trigger('click');
-}
