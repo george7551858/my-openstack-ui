@@ -51,7 +51,7 @@ function gen_REST_url (component, resource, item_id) {
   var tenant_id = Cookies.get("tenant");
   var res = openstack_url;
   res+= services_mapping[component];
-  if(component == "nova" || component == "heat" && resource !== undefined ) {res+= tenant_id;}
+  if((component == "nova" || component == "heat") && resource !== undefined ) {res+= tenant_id;}
   if(resource) {res+= '/'+resource;}
   if(resource && item_id) {res+= '/'+item_id;}
 
@@ -142,7 +142,7 @@ $('.resource').on('click', 'a', function(event) {
   });
 });
 
-$('.btn-group').on('click', 'button:first-child', function(event) {
+$('.btn-group,.input-group-btn').on('click', 'button:first-child', function(event) {
   event.preventDefault();
   $(this).nextAll('ul').find('a').eq(0).trigger('click');
 });
