@@ -1,49 +1,6 @@
 /* jshint devel:true */
 'use strict';
 
-
-/* from MDN */
-var docCookies = {
-  getItem: function (sKey) {
-    if (!sKey) { return null; }
-    return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
-  },
-  setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
-    if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
-    var sExpires = "";
-    if (vEnd) {
-      switch (vEnd.constructor) {
-        case Number:
-          sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
-          break;
-        case String:
-          sExpires = "; expires=" + vEnd;
-          break;
-        case Date:
-          sExpires = "; expires=" + vEnd.toUTCString();
-          break;
-      }
-    }
-    document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
-    return true;
-  },
-  removeItem: function (sKey, sPath, sDomain) {
-    if (!this.hasItem(sKey)) { return false; }
-    document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "");
-    return true;
-  },
-  hasItem: function (sKey) {
-    if (!sKey) { return false; }
-    return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
-  },
-  keys: function () {
-    var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
-    for (var nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) { aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]); }
-    return aKeys;
-  }
-};
-
-
 var openstack_url = 'http://10.71.99.1';
 var services_mapping = {
   nova: ':8774/v2/',
@@ -54,9 +11,9 @@ var services_mapping = {
 
 function get_token() {
 
-  if (docCookies.hasItem("token ")) {
+  if (Cookies.get("token")) {
     $('#json_ret').text(
-      docCookies.getItem("token")+'\n'+docCookies.getItem("tenant")
+      Cookies.get("token")+'\n'+Cookies.get("tenant")
     );
     show_table();
     return;
@@ -77,8 +34,8 @@ function get_token() {
   jqxhr.done(function(ret) {
     $('#json_ret').text(JSON.stringify(ret.access, null, '\t'));
     show_table(ret.access.serviceCatalog);
-    docCookies.setItem("token", ret.access.token.id, 60*60);
-    docCookies.setItem("tenant", ret.access.token.tenant.id, 60*60);
+    Cookies.set("token",  ret.access.token.id,        {expires:60*60});
+    Cookies.set("tenant", ret.access.token.tenant.id, {expires:60*60});
   });
 }
 
@@ -91,10 +48,11 @@ function add_server() {
 
 
 function gen_REST_url (component, resource, item_id) {
-  var tenant_id = docCookies.getItem("tenant");
+  var tenant_id = Cookies.get("tenant");
   var res = openstack_url;
   res+= services_mapping[component];
-  if(resource) {res+= tenant_id+'/'+resource+'';}
+  if(component == "nova" && resource !== undefined ) {res+= tenant_id;}
+  if(resource) {res+= '/'+resource;}
   if(resource && item_id) {res+= '/'+item_id;}
 
   return res;
@@ -105,7 +63,7 @@ function openstack_api(REST_url, method, content) {
   $('#resource_url').val(REST_url);
   $('#request_content').val(content);
 
-  var token_id = docCookies.getItem("token");
+  var token_id = Cookies.get("token");
 
   var $jqXHR = $.ajax({
     url: 'http://localhost/op/api.php',
